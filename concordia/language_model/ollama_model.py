@@ -14,7 +14,8 @@
 
 """Ollama Language Model, a wrapper for models running on the local machine."""
 
-from collections.abc import Collection, Sequence
+from collections.abc import Collection
+from collections.abc import Sequence
 import json
 
 from concordia.language_model import language_model
@@ -22,7 +23,6 @@ from concordia.utils import sampling
 from concordia.utils.deprecated import measurements as measurements_lib
 import ollama
 from typing_extensions import override
-
 
 _MAX_MULTIPLE_CHOICE_ATTEMPTS = 20
 _DEFAULT_TEMPERATURE = 0.5
@@ -96,6 +96,7 @@ class OllamaLanguageModel(language_model.LanguageModel):
                  'top_k': top_k},
         keep_alive='10m',
     )
+    # print(response)
     result = response['response']
 
     if self._measurements is not None:
@@ -103,6 +104,8 @@ class OllamaLanguageModel(language_model.LanguageModel):
           self._channel,
           {'raw_text_length': len(result)})
 
+    # return result
+    # print('Ollama raw response:')
     return result
 
   @override

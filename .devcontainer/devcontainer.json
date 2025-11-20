@@ -2,7 +2,20 @@
 {
   "name": "Concordia",
   "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
-  "postCreateCommand": "bin/install.sh",
+  "runArgs": [
+    "--gpus=all",
+    "--privileged"
+  ],
+  "postCreateCommand": "bin/install.sh && curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz | sudo tar zx -C /usr",
+  "mounts": [
+    "source=ollama-data,target=/home/vscode/.ollama,type=volume"
+    // "source=ollama-data,target=/usr/share/ollama/.ollama,type=volume"
+  ],
+  "containerEnv": {
+    "NVIDIA_VISIBLE_DEVICES": "all",
+    "NVIDIA_DRIVER_CAPABILITIES": "all"
+    // "OLLAMA_MODELS": "/usr/share/ollama/.ollama"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -20,5 +33,6 @@
   "remoteEnv": {
     "PYTHONPATH": "${containerEnv:PYTHONPATH}:${containerWorkspaceFolder}",
     "PYTHONSAFEPATH": "1"
-  }
+  },
+  "postStartCommand": "sudo chown -R vscode:vscode /home/vscode/.ollama"
 }

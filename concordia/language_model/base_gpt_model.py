@@ -14,14 +14,14 @@
 
 """Base class for GPT models (OpenAI and Azure)."""
 
-from collections.abc import Collection, Sequence
+from collections.abc import Collection
+from collections.abc import Sequence
 
 from concordia.language_model import language_model
 from concordia.utils.deprecated import measurements as measurements_lib
 from openai import AzureOpenAI
 from openai import OpenAI
 from typing_extensions import override
-
 
 _MAX_MULTIPLE_CHOICE_ATTEMPTS = 20
 _DEFAULT_VERBOSITY = 'low'
@@ -54,7 +54,7 @@ class BaseGPTModel(language_model.LanguageModel):
       self,
       prompt: str,
       reasoning_effort: str,
-      verbosity: str,
+      # verbosity: str,
       *,
       max_tokens: int = language_model.DEFAULT_MAX_TOKENS,
       terminators: Collection[str] = language_model.DEFAULT_TERMINATORS,
@@ -98,7 +98,7 @@ class BaseGPTModel(language_model.LanguageModel):
         timeout=timeout,
         seed=seed,
         reasoning_effort=reasoning_effort,
-        verbosity=verbosity,
+        # verbosity=verbosity,
     )
 
     if self._measurements is not None:
@@ -125,8 +125,8 @@ class BaseGPTModel(language_model.LanguageModel):
     del top_k  # Unused
     return self._sample_text(
         prompt=prompt,
-        reasoning_effort='minimal',
-        verbosity=self._verbosity,
+        reasoning_effort='low',
+        # verbosity=self._verbosity,
         max_tokens=max_tokens,
         terminators=terminators,
         temperature=temperature,
@@ -156,7 +156,7 @@ class BaseGPTModel(language_model.LanguageModel):
       answer = self._sample_text(
           prompt,
           reasoning_effort='medium',
-          verbosity=self._verbosity,
+          # verbosity=self._verbosity,
           temperature=1.0,
           seed=seed,
       )
