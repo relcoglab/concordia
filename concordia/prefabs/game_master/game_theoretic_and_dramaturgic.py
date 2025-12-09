@@ -14,7 +14,9 @@
 
 """A prefab game master specialized for matrix game decisions."""
 
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable
+from collections.abc import Mapping
+from collections.abc import Sequence
 import dataclasses
 
 from concordia.agents import entity_agent_with_logging

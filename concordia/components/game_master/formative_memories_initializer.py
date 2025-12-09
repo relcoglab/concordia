@@ -14,7 +14,8 @@
 
 """Component helping a game master pick which game master to use next."""
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
+from collections.abc import Sequence
 import functools
 import re
 import types
@@ -54,7 +55,7 @@ class FormativeMemoriesInitializer(
           make_observation_component.DEFAULT_MAKE_OBSERVATION_COMPONENT_KEY
       ),
       pre_act_label: str = '',
-      sentences_per_episode: int = 5,
+      sentences_per_episode: int = 3,
   ):
     """A component that generates a backstory for each player entity.
 
@@ -71,7 +72,7 @@ class FormativeMemoriesInitializer(
       shared_memories: specific memories all players and the game master share.
       player_specific_memories: specific memories each player shares with the
         game master.
-      player_specific_context: specific context the game master needs to know 
+      player_specific_context: specific context the game master needs to know
         about each player.
       components: Keys of components to condition on.
       delimiter_symbol: The symbol to use to separate episodes in the generated
@@ -228,19 +229,32 @@ class FormativeMemoriesInitializer(
         f'Write a life story for a {gender} character '
         f'named {active_entity_name} who was born in {date_of_birth}.'
     )
+    # question += (
+    #     f'Begin the story when {active_entity_name} is very young and end it'
+    #     ' when they are quite old. The story should be no more than four'
+    #     ' paragraphs in total. The story may include details such as (but'
+    #     ' not limited to) any of the following: what their job is or was,'
+    #     ' what their typical day was or is like, what their goals, desires,'
+    #     ' hopes, dreams, and aspirations are, and have been, as well as'
+    #     ' their drives, duties, responsibilities, and obligations. It should'
+    #     ' clarify what gives them joy and what are they afraid of. It may'
+    #     ' include their friends and family, as well as antagonists. It'
+    #     ' should be a complete life story for a complete person but it'
+    #     ' should not specify how their life ends. The reader should be left'
+    #     f' with a profound understanding of {active_entity_name}.'
+    # )
     question += (
         f'Begin the story when {active_entity_name} is very young and end it'
-        ' when they are quite old. The story should be no more than four'
-        ' paragraphs in total. The story may include details such as (but'
-        ' not limited to) any of the following: what their job is or was,'
-        ' what their typical day was or is like, what their goals, desires,'
-        ' hopes, dreams, and aspirations are, and have been, as well as'
-        ' their drives, duties, responsibilities, and obligations. It should'
-        ' clarify what gives them joy and what are they afraid of. It may'
-        ' include their friends and family, as well as antagonists. It'
-        ' should be a complete life story for a complete person but it'
-        ' should not specify how their life ends. The reader should be left'
-        f' with a profound understanding of {active_entity_name}.'
+        ' when they are quite old. The story should be no more than two'
+        ' paragraphs in total with short to medium-length straightforward'
+        ' sentences. The story may include details such as (but not limited'
+        ' to) any of the following: what their job is or was, what their'
+        ' typical day was or is like, as well as their drives, duties,'
+        ' responsibilities, and obligations. It may include their friends and'
+        ' family, as well as antagonists. It should be a complete life story'
+        ' for a complete person but it should not specify how their life ends.'
+        ' The reader should be left with a good working understanding of'
+        f' {active_entity_name}.'
     )
     backstory = prompt.open_question(
         question,

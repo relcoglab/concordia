@@ -14,7 +14,8 @@
 
 """Component that helps a game master decide whose turn is next."""
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
+from collections.abc import Sequence
 import copy
 import random
 import threading
@@ -28,7 +29,6 @@ from concordia.language_model import language_model
 from concordia.typing import entity as entity_lib
 from concordia.typing import entity_component
 from concordia.typing import scene as scene_lib
-
 
 DEFAULT_NEXT_ACTING_COMPONENT_KEY = '__next_acting__'
 # Initiative is the Dungeons & Dragons term for the rule system that controls

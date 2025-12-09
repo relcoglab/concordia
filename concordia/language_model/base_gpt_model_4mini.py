@@ -53,7 +53,7 @@ class BaseGPTModel(language_model.LanguageModel):
   def _sample_text(
       self,
       prompt: str,
-      reasoning_effort: str,
+      # reasoning_effort: str,
       # verbosity: str,
       *,
       max_tokens: int = language_model.DEFAULT_MAX_TOKENS,
@@ -97,8 +97,8 @@ class BaseGPTModel(language_model.LanguageModel):
         max_completion_tokens=max_tokens,
         timeout=timeout,
         seed=seed,
-        reasoning_effort=reasoning_effort,
-        # verbosity=# verbosity,
+        # reasoning_effort=reasoning_effort,
+        # verbosity=verbosity,
     )
 
     if self._measurements is not None:
@@ -125,8 +125,8 @@ class BaseGPTModel(language_model.LanguageModel):
     del top_k  # Unused
     return self._sample_text(
         prompt=prompt,
-        reasoning_effort='low',
-        # verbosity=self._# verbosity,
+        # reasoning_effort='low',
+        # verbosity=self._verbosity,
         max_tokens=max_tokens,
         terminators=terminators,
         temperature=temperature,
@@ -155,8 +155,8 @@ class BaseGPTModel(language_model.LanguageModel):
     for attempts in range(_MAX_MULTIPLE_CHOICE_ATTEMPTS):
       answer = self._sample_text(
           prompt,
-          reasoning_effort='medium',
-          # verbosity=self._# verbosity,
+          # reasoning_effort='medium',
+          # verbosity=self._verbosity,
           temperature=1.0,
           seed=seed,
       )

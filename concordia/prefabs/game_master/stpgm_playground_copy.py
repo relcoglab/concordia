@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A prefab for game masters that simulate a physically situated time and place.
+"""A prefab for game masters that simulate a physically situated time and place WITH INVENTORY COMPONENT.
 """
 
 from collections.abc import Mapping
 from collections.abc import Sequence
 import copy
 import dataclasses
+from datetime import datetime
 from typing import Any
 
 from concordia.agents import entity_agent_with_logging
@@ -66,6 +67,9 @@ class GameMaster(prefab_lib.Prefab):
           # string will be used as a prompt for the location representation
           # component and a constant available at all times for the game master.
           'locations': '',
+          # Inventory parameters
+          'inventory_item_type_configs': [],
+          'inventory_initial_endowments': {},
           'extra_components': {},
           # A mapping from component name to the index at which to insert it
           # in the component order. If not specified, the extra components
@@ -208,6 +212,25 @@ class GameMaster(prefab_lib.Prefab):
         pre_act_label='\nCurrent locations',
     )
 
+#############################################################
+#### NEW COMPONENT - TRYING TO ADD INVENTORY HERE ##########
+#############################################################
+
+    inventory_key = 'inventory'
+    inventory = gm_components.inventory.Inventory(
+        model=model,
+        item_type_configs= self.params.get('inventory_item_type_configs', []),
+        player_initial_endowments= self.params.get('inventory_initial_endowments', {}),
+        clock_now= lambda: datetime.now(),  # get_current_time,
+        observations_component_name= observation_component_key,
+        memory_component_name= memory_component_key,
+        financial= True,
+        never_increase= False,
+        pre_act_label='\nCurrent inventory',
+        verbose= False,
+    )
+#############################################################
+
     world_state_key = 'world_state'
     world_state = gm_components.world_state.WorldState(
         model=model,
@@ -218,6 +241,7 @@ class GameMaster(prefab_lib.Prefab):
             clock_constant_key,
             locations_key,
             generative_clock_key,
+            inventory_key,  ##### ADDED HERE BY ME #####
             relevant_memories_key,
             display_events_key,
         ],
@@ -239,6 +263,7 @@ class GameMaster(prefab_lib.Prefab):
             display_events_key,
             generative_clock_key,
             locations_key,
+            inventory_key,  ##### ADDED HERE BY ME #####
             world_state_key,
         ],
         reformat_observations_in_specified_style=(
@@ -259,6 +284,7 @@ class GameMaster(prefab_lib.Prefab):
             display_events_key,
             generative_clock_key,
             locations_key,
+            inventory_key,  ##### ADDED HERE BY ME #####
             world_state_key,
         ],
     )
@@ -301,6 +327,7 @@ class GameMaster(prefab_lib.Prefab):
         display_events_key,
         generative_clock_key,
         locations_key,
+        inventory_key,  ##### ADDED HERE BY ME #####
         world_state_key,
     ]
 
@@ -326,6 +353,7 @@ class GameMaster(prefab_lib.Prefab):
         display_events_key: display_events,
         generative_clock_key: generative_clock,
         locations_key: entity_locations,
+        inventory_key: inventory,  ##### ADDED HERE BY ME #####
         world_state_key: world_state,
         memory_component_key: memory_component,
         make_observation_key: make_observation,

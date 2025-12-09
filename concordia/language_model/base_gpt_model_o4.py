@@ -98,7 +98,7 @@ class BaseGPTModel(language_model.LanguageModel):
         timeout=timeout,
         seed=seed,
         reasoning_effort=reasoning_effort,
-        # verbosity=# verbosity,
+        # verbosity=verbosity,
     )
 
     if self._measurements is not None:
@@ -126,7 +126,7 @@ class BaseGPTModel(language_model.LanguageModel):
     return self._sample_text(
         prompt=prompt,
         reasoning_effort='low',
-        # verbosity=self._# verbosity,
+        # verbosity=self._verbosity,
         max_tokens=max_tokens,
         terminators=terminators,
         temperature=temperature,
@@ -156,7 +156,7 @@ class BaseGPTModel(language_model.LanguageModel):
       answer = self._sample_text(
           prompt,
           reasoning_effort='medium',
-          # verbosity=self._# verbosity,
+          # verbosity=self._verbosity,
           temperature=1.0,
           seed=seed,
       )
